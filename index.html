@@ -1,0 +1,178 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Свадьба Игоря и Дарьи</title>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Open+Sans:wght@300;400&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Open Sans', sans-serif;
+      background: linear-gradient(to bottom, #f7f9fb, #e1ecf1);
+      background-image: url('');
+      color: #333;
+      padding: 20px;
+    }
+
+    .card {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 30px 25px;
+      background: rgba(255, 255, 255, 0.96);
+      background-image: url('https://i.pinimg.com/736x/81/0d/63/810d63f119fb5d3f4d528aca91b77409.jpg');
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+      border-radius: 16px;
+      text-align: center;
+    }
+
+    h1 {
+      font-family: 'Great Vibes', cursive;
+      font-size: 2.5rem;
+      color: #2e2e2e;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+      margin: 10px 0 20px;
+      color: #6e6e6e;
+    }
+
+    .date {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #2a2a2a;
+      margin: 10px 0;
+    }
+
+    .info {
+      font-size: 1rem;
+      color: #555;
+      margin-bottom: 30px;
+    }
+
+    .timing {
+      display: flex;
+      justify-content: space-around;
+      margin: 20px 0;
+    }
+
+    .timing div {
+      font-size: 0.95rem;
+    }
+
+    form input, form textarea, form select {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1rem;
+    }
+
+    button {
+      background-color: #9cb7c2;
+      color: white;
+      padding: 10px 25px;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background-color: #85a3ad;
+    }
+
+    .footer-names {
+      margin-top: 30px;
+      font-family: 'Great Vibes', cursive;
+      font-size: 1.8rem;
+      color: #3e3e3e;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Дорогие гости!</h1>
+    <h2>мы рады сообщить вам, что</h2>
+    <div class="date">02.09.2025</div>
+    <div class="info">
+      состоится долгожданное событие — наша свадьба!<br />
+      И мы будем невероятно счастливы, если эту радость вы разделите с нами!
+    </div>
+    <div class="info">
+      📍 Регистрация: Шипиловский ЗАГС<br/>
+      🕰 Начало регистрации: 12:30
+    </div>
+    <div class="timing">
+      <div>
+        <div>📍 Сбор гостей</div>
+        <strong>12:00</strong>
+      </div>
+      <div>
+        <div>💍 Регистрация</div>
+        <strong>12:30</strong>
+      </div>
+    </div>
+
+    <form id="rsvpForm">
+      <input type="text" name="name" placeholder="Ваше имя" required />
+      <select name="attending" required>
+        <option value="">Смогу ли я прийти?</option>
+        <option value="Да">Да</option>
+        <option value="Нет">К сожалению, нет</option>
+      </select>
+      <input type="text" name="guests" placeholder="С кем приду (если не один)" />
+      <select name="drinks">
+        <option value="">Предпочитаемые напитки</option>
+        <option value="Вино">Вино</option>
+        <option value="Шампанское">Шампанское</option>
+        <option value="Коктейли">Коктейли</option>
+        <option value="Безалкогольные">Безалкогольные</option>
+      </select>
+      <textarea name="comment" placeholder="Комментарий (аллергии, пожелания)"></textarea>
+      <button type="submit">Отправить</button>
+    </form>
+
+    <div class="footer-names">Игорь и Дарья</div>
+  </div>
+
+  <script>
+    document.getElementById('rsvpForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const token = '7545209777:AAF32r-eOCAIOHVtJde76CQ28Yc7nL11xdI';
+      const chat_id = '810548535';
+
+      const formData = new FormData(this);
+      const message = `
+📩 Новая RSVP форма:
+
+👤 Имя: ${formData.get('name')}
+✅ Придёт: ${formData.get('attending')}
+👥 С кем: ${formData.get('guests') || '—'}
+🍷 Напитки: ${formData.get('drinks') || '—'}
+📝 Комментарий: ${formData.get('comment') || '—'}
+      `;
+
+      fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ chat_id, text: message })
+      }).then(response => {
+        if (response.ok) {
+          alert('Спасибо! Ваш ответ отправлен.');
+          document.getElementById('rsvpForm').reset();
+        } else {
+          alert('Произошла ошибка при отправке. Попробуйте позже.');
+        }
+      });
+    });
+  </script>
+</body>
+</html>
